@@ -24,3 +24,11 @@ Post_Employeee_Regist
     ${res_body}=    convert to string   ${response.content}
     should contain  ${res_body}    ${Name}
     should contain  ${res_body}    ${Job}
+
+    ${json_response}    Evaluate    json.loads('''${response.text}''')   json
+    ${third_field}    Set Variable    ${json_response['id']}
+
+    ${is_integer}    Evaluate    isinstance(${third_field}, int) and ${third_field} >= 0
+
+    Run Keyword If    ${third_field}    Log    The value is an integer
+    ...    ELSE    Log    The value is not an integer
